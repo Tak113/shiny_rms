@@ -1,0 +1,12 @@
+name: db_rms
+title: db_rms
+username:
+account: datak
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3899815
+bundleId: 4423162
+url: https://datak.shinyapps.io/db_rms/
+when: 1617344293.79338
+asMultiple: FALSE
+asStatic: FALSE
