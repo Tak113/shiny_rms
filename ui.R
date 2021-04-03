@@ -4,7 +4,7 @@
 source('ui_rms_arc.R', local = TRUE)
 source('ui_rms_procblock.R', local = TRUE)
 source('ui_rms_arcblockmap.R', local = TRUE)
-# source('ui_rms_equip.R', local = TRUE)
+source('ui_rms_equip.R', local = TRUE)
 # source('ui_rms_blockopsmap.R', local = TRUE)
 # source('ui_rms_mtrl.R', local = TRUE)
 # source('ui_rms_design.R', local = TRUE)
@@ -45,8 +45,8 @@ body <- dashboardBody(
     # tabItem_readmefirst,
     tabItem_rms_arc,
     tabItem_rms_procblock,
-    tabItem_rms_abm
-    # tabItem_rms_equip
+    tabItem_rms_abm,
+    tabItem_rms_equip
     # tabItem_rms_bom,
     # tabItem_rms_mtrl,
     # tabItem_rms_design,

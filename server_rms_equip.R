@@ -4,19 +4,15 @@ useShinyalert()
 #make equip_df reactive on the user event
 equip_df <- reactiveValues()
 
-dbCon <- function() {
-  mf_name_selection_equip <- dbReadTable(con,'procblock') %>% select(-c(ProcBlock_Note,ProcBlock))
-  equip_df$data <- dbReadTable(con, "equip") %>% 
-    left_join(mf_name_selection_equip, by='uuid_pb')
-}
-dbCon()
+mf_name_selection_equip <- dbReadTable(con,'procblock') %>% select(-c(ProcBlock_Note,ProcBlock,uuid_pb))
+equip_df$data <- dbReadTable(con, "equip")
 
 # render selectinput in UI ------------------------------------------------
 #in shiny app, the ui function runs before the server function. need to move to server making this as reactive expression
 output$ui_equip_selection <- renderUI({
   selectInput("equip_selection",
               label = "Manufacturing Format;",
-              choices = c("All", unique(mf_name_selection_equip$Mfg_Fomat)),
+              choices = c("All", unique(mf_name_selection_equip$MfgFomat)),
               selected = "All",
               multiple = TRUE)
 })
@@ -34,7 +30,6 @@ entry_form_equip <- function(button_id) {
       title = strong("Entry Form"),
       fluidRow(
         column(6,
-               textInput("CEID", "CEID", placeholder = ""),
                textInput("Rcs", "Rcs", placeholder = ""),
                textInput("EquipDescription", "EquipDescription", placeholder = ""),
                textInput("EquipGroup", "EquipGroup", placeholder = ""),
@@ -42,7 +37,7 @@ entry_form_equip <- function(button_id) {
                textInput("Model", "Model", placeholder = "")
         ),
         column(6,
-               selectInput("Mfg_Fomat","Mfg_Fomat",choices = c("",unique(as.character(mf_name_selection_equip$Mfg_Fomat)))),
+               selectInput("MfgFomat","MfgFomat",choices = c("",unique(as.character(mf_name_selection_equip$MfgFomat)))),
                numericInput("EquipCost_woIQ", "EquipCost_woIQ", value = 1000000, min = 0),
                numericInput("MORa", "MORa", value = 500, min = 0),
                numericInput("SpaceScaler", "SpaceScaler", value = 1.5, min = 0),
@@ -50,8 +45,7 @@ entry_form_equip <- function(button_id) {
                numericInput("DLperTool", "DLperTool", value = 1, min = 0),
         ),
         column(6,
-               textAreaInput("Equip_Note","Equip_Note", placeholder = "put assumption such as equipment configuration"),
-               textAreaInput("filename","filename", placeholder = "file name for a quote, owner, etc.")
+               textAreaInput("Equip_Note","Equip_Note", placeholder = "put assumption such as equipment configuration")
         )
       ),
       footer = tagList(
@@ -69,24 +63,21 @@ entry_form_equip <- function(button_id) {
 formData_equip <- reactive({
 
   formData_equip <- data.frame(uuid_equip = UUIDgenerate(),
-                         CEID = input$CEID,
                          Rcs = input$Rcs,
                          EquipDescription = input$EquipDescription,
                          EquipGroup = input$EquipGroup,
                          Vender = input$Vender,
                          Model = input$Model,
-                         Mfg_Fomat = input$Mfg_Fomat,
+                         MfgFomat = input$MfgFomat,
                          EquipCost_woIQ = input$EquipCost_woIQ,
                          MORa = input$MORa,
                          SpaceScaler = input$SpaceScaler,
                          GU = input$GU,
                          DLperTool = input$DLperTool,
-                         Equip_Note = input$Equip_Note,
-                         filename = input$filename
+                         Equip_Note = input$Equip_Note
   ) %>%
-    mutate_each(funs(as.numeric), c(EquipCost_woIQ, MORa, SpaceScaler, GU, DLperTool)) %>% #match variable type to original database
-    mutate_each(funs(as.character), c(uuid_equip, CEID, Rcs, EquipDescription, EquipGroup, Vender, Model, Mfg_Fomat, Equip_Note,filename)) %>%  #match variable type to original database
-    left_join(mf_name_selection_equip, by='Mfg_Fomat')
+  mutate_each(funs(as.numeric), c(EquipCost_woIQ, MORa, SpaceScaler, GU, DLperTool)) %>% #match variable type to original database
+  mutate_each(funs(as.character), c(uuid_equip, Rcs, EquipDescription, EquipGroup, Vender, Model, MfgFomat, Equip_Note)) #match variable type to original database
 
   #paste0(str(formData))
   return(formData_equip)
@@ -186,21 +177,19 @@ observeEvent(input$edit_button_equip, {
     entry_form_equip("submit_edit_equip")
 
     #update each value in entyr form based on selected row
-    updateTextInput(session, "CEID", value = interim_table_equip()[input$equip_table_rows_selected, "CEID"])
     updateTextInput(session, "Rcs", value = interim_table_equip()[input$equip_table_rows_selected, "Rcs"])
     updateTextInput(session, "EquipDescription", value = interim_table_equip()[input$equip_table_rows_selected, "EquipDescription"])
     updateTextInput(session, "EquipGroup", value = interim_table_equip()[input$equip_table_rows_selected, "EquipGroup"])
     updateTextInput(session, "Vender", value =interim_table_equip()[input$equip_table_rows_selected, "Vender"])
     updateTextInput(session, "Model", value = interim_table_equip()[input$equip_table_rows_selected, "Model"])
-    updateSelectInput(session, "Mfg_Fomat", selected = interim_table_equip()[input$equip_table_rows_selected, "Mfg_Fomat"],
-                      choices = unique(as.character(mf_name_selection_equip$Mfg_Fomat)))
+    updateSelectInput(session, "MfgFomat", selected = interim_table_equip()[input$equip_table_rows_selected, "MfgFomat"],
+                      choices = unique(as.character(mf_name_selection_equip$MfgFomat)))
     updateNumericInput(session, "EquipCost_woIQ", value = interim_table_equip()[input$equip_table_rows_selected, "EquipCost_woIQ"])
     updateNumericInput(session, "MORa", value = interim_table_equip()[input$equip_table_rows_selected, "MORa"])
     updateNumericInput(session, "SpaceScaler", value = interim_table_equip()[input$equip_table_rows_selected, "SpaceScaler"])
     updateNumericInput(session, "GU", value = interim_table_equip()[input$equip_table_rows_selected, "GU"])
     updateNumericInput(session, "DLperTool", value = interim_table_equip()[input$equip_table_rows_selected, "DLperTool"])
     updateTextAreaInput(session, "Equip_Note", value = interim_table_equip()[input$equip_table_rows_selected, "Equip_Note"])
-    updateTextAreaInput(session, "filename", value = interim_table_equip()[input$equip_table_rows_selected, "filename"])
 
   }
 })
@@ -209,7 +198,7 @@ observeEvent(input$edit_button_equip, {
 observeEvent(input$submit_edit_equip, {
   uuid_selection_equip <- interim_table_equip()[input$equip_table_rows_selected, "uuid_equip"] #identify uuid for the selected row
   uuid_index_equip <- match(uuid_selection_equip, equip_df$data$uuid_equip) #get matched row index using UUID
-  equip_df$data[uuid_index_equip, 1:15] <- formData_equip()[,2:16] #replace data with updated data. make sure column order matches. uuid_equip is 1st column in formData while last column in database
+  equip_df$data[uuid_index_equip, 1:13] <- formData_equip()[,1:13] #replace data with updated data. make sure column order matches. uuid_equip is 1st column in formData while last column in database
   shinyjs::reset("entry_form_equip")
   removeModal()
 })
@@ -231,7 +220,8 @@ observeEvent(input$fetch_button_equip, {
 })
 observeEvent(input$ok_refresh_equip, {
   removeModal()
-  dbCon()
+  mf_name_selection_equip <- dbReadTable(con,'procblock') %>% select(-c(ProcBlock_Note,ProcBlock,uuid_pb))
+  equip_df$data <- dbReadTable(con, "equip")
 })
 
 
@@ -242,7 +232,7 @@ interim_table_equip <- reactive({
 
   table <- equip_df$data
   if (!"All" %in% input$equip_selection){
-    return(table[table$Mfg_Fomat %in% input$equip_selection,])
+    return(table[table$MfgFomat %in% input$equip_selection,])
   }else{
     return(table)
   }
@@ -252,20 +242,35 @@ interim_table_equip <- reactive({
 output$equip_table <- DT::renderDataTable({
   
   # table <- interim_table_equip() %>% select(-uuid_equip) #remove UUID
-  table <- equip_df$data %>% select(-uuid_equip,-filename,-CEID) #remove UUID
+  table <- equip_df$data %>% select(-uuid_equip) #remove UUID
   dt <- datatable(
     table,
     filter = 'top',
     selection = 'multiple',
     escape = FALSE,
     rownames = FALSE,
+    extensions = 'Buttons', # for colvis
     options = list (
-      pageLength = 20
+      pageLength = 20,
+      lengthChange = TRUE,
+      dom = 'Bfrtip',
+      buttons = list(
+        list(
+          extend = 'colvis',
+          text = 'Column Visibility'
+        )
+      ),
+      columnDefs = list(
+        list(
+          targets = c(4,8,11), # has to be a number, number is column ordre from left from 0
+          visible = FALSE
+        )
+      )
     )
   )
   dt %>%
     formatCurrency('EquipCost_woIQ',digit=0) %>%
-    formatPercentage(c('GU','IQNTM'),digit=0) %>% 
+    formatPercentage(c('GU'),digit=0) %>% 
     formatRound(c('SpaceScaler', 'DLperTool'), digit=1) %>%
     formatRound('MORa', digit=0) %>% 
     formatString(c('DLperTool'),suffix = " /Day") %>% 
