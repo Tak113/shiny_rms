@@ -5,8 +5,8 @@ tabItem_rms_equip <-
             
             shinyjs::useShinyjs(),
             
-            titlePanel("PF RMS : Equipment"),
-            helpText("Make sure to save for the update(s) you make. Each events are stored only at user side until user saves (eg. connection pool)"),
+            titlePanel("RMS : Equipment"),
+            helpText("Make sure to save for the update(s) you make. Each events are stored only at user side until user saves"),
             
             br(),
             

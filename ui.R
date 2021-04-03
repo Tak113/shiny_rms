@@ -5,13 +5,11 @@ source('ui_rms_arc.R', local = TRUE)
 source('ui_rms_procblock.R', local = TRUE)
 source('ui_rms_arcblockmap.R', local = TRUE)
 source('ui_rms_equip.R', local = TRUE)
-# source('ui_rms_blockopsmap.R', local = TRUE)
-# source('ui_rms_mtrl.R', local = TRUE)
-# source('ui_rms_design.R', local = TRUE)
+source('ui_rms_blockopsmap.R', local = TRUE)
+source('ui_rms_mtrl.R', local = TRUE)
+# source('ui_rms_fin.R', local = TRUE)
 # source('ui_app_master.R', local = TRUE)
-# source('ui_app_arcdrilldown.R', local = TRUE)
-# source('ui_app_mordrilldown.R', local = TRUE)
-# source('ui_app_MORxxx.R', local = TRUE)
+# source('ui_app_drill.R', local = TRUE)
 
 # dashboard component -----------------------------------------------------
 header <- dashboardHeader(title = "RM", titleWidth = "250px")
@@ -26,7 +24,8 @@ sidebar <- dashboardSidebar(width = "250px", collapsed = TRUE,
                                        menuSubItem("Prod Block Map", tabName = 'arcblockmap', icon = icon("table")),
                                        menuSubItem("Equipment", tabName = 'equipment', icon = icon("table")),
                                        menuSubItem("Block Ops Map", tabName = 'blockopsmap', icon = icon("table")),
-                                       menuSubItem("Material", tabName = 'material', icon = icon("table"))
+                                       menuSubItem("Material", tabName = 'material', icon = icon("table")),
+                                       menuSubItem("Finance", tabName = 'finance', icon = icon("table"))
                               ),
                               menuItem("Business Intelligence", icon = icon("chart-line"),
                                        menuSubItem("Master Table", tabName = 'mastertable', icon = icon("project-diagram")),
@@ -46,14 +45,12 @@ body <- dashboardBody(
     tabItem_rms_arc,
     tabItem_rms_procblock,
     tabItem_rms_abm,
-    tabItem_rms_equip
-    # tabItem_rms_bom,
-    # tabItem_rms_mtrl,
-    # tabItem_rms_design,
+    tabItem_rms_equip,
+    tabItem_rms_bom,
+    tabItem_rms_mtrl
+    # tabItem_rms_fin,
     # tabItem_app_master,
-    # tabItem_app_arcdrilldown,
-    # tabItem_app_mordrilldown,
-    # tabItem_app_morxxx
+    # tabItem_app_drill
     
   ),
   

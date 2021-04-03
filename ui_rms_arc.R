@@ -7,7 +7,7 @@ tabItem_rms_arc <-
             # shinyjs::inlineCSS(appCSS),
             
             titlePanel("RMS : Product"),
-            helpText("Make sure to save for the update(s) you make. Each events are stored only at user side until user saves (eg. connection pool)"),
+            helpText("Make sure to save for the update(s) you make. Each events are stored only at user side until user saves"),
             helpText("Product data table holds product options and note for each product scenario"),
             br(),
             

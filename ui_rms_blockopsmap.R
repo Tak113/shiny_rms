@@ -1,20 +1,20 @@
-tabItem_rms_abm <-
-  tabItem(tabName = "arcblockmap",
+tabItem_rms_bom <- 
+  tabItem(tabName = "blockopsmap",
           
           fluidPage(
             
             shinyjs::useShinyjs(),
             # shinyjs::inlineCSS(appCSS),
             
-            titlePanel("RMS : Product - Process Block Map"),
+            titlePanel("RMS : Process Block - Operations - Resources Map"),
             helpText("Make sure to save for the update(s) you make. Each events are stored only at user side until user saves"),
-            helpText("Prod Block Map data table holds process block by product recipe options"),
+            helpText("Block Ops Map data table holds Operations and Resources combination and its MOR by process block options"),
             br(),
             
             #Architecture selection pull down
             fluidRow(
               column(4,
-                     uiOutput('ui_abm_selection')
+                     uiOutput('ui_bom_selection')
               )
             ),
             
@@ -23,11 +23,11 @@ tabItem_rms_abm <-
             #operation button settings
             fluidRow(
               column(12,
-                     actionButton("add_button_abm", "Add", icon("plus")),
-                     actionButton("edit_button_abm", "Edit", icon("edit")),
-                     actionButton("copy_button_abm", "Copy", icon("copy")),
-                     actionButton("delete_button_abm", "Delete", icon("trash-alt")),
-                     actionButton("fetch_button_abm", "Fetch", icon("sync-alt"))
+                     actionButton("add_button_bom", "Add", icon("plus")),
+                     actionButton("edit_button_bom", "Edit", icon("edit")),
+                     actionButton("copy_button_bom", "Copy", icon("copy")),
+                     actionButton("delete_button_bom", "Delete", icon("trash-alt")),
+                     actionButton("fetch_button_bom", "Fetch", icon("sync-alt"))
               )
             ),
             br(),
@@ -35,7 +35,7 @@ tabItem_rms_abm <-
             #datatable
             fluidRow(
               column(12, #data table width
-                     dataTableOutput("abm_table")
+                     dataTableOutput("bom_table")
               )
             ),
             
@@ -45,8 +45,8 @@ tabItem_rms_abm <-
             #save, download button
             fluidRow(
               column(12,
-                     actionButton("save_button_abm", "Save", icon("save")),
-                     downloadButton("download_button_abm", "Download", icon("download"))
+                     actionButton("save_button_bom", "Save", icon("save")),
+                     downloadButton("download_button_bom", "Download", icon("download"))
               )
             )
             

@@ -6,8 +6,8 @@ tabItem_rms_procblock <-
             shinyjs::useShinyjs(),
             # shinyjs::inlineCSS(appCSS),
             
-            titlePanel("Process Block"),
-            helpText("Make sure to save for the update(s) you make. Each events are stored only at user side until user saves (eg. connection pool)"),
+            titlePanel("RMS : Process Block"),
+            helpText("Make sure to save for the update(s) you make. Each events are stored only at user side until user saves"),
             helpText("Process Block data table holds process block for each products recipe and its explanations"),
             
             br(),

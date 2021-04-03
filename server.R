@@ -69,10 +69,11 @@ server <- function(input, output, session) {
   source('server_rms_procblock.R', local = TRUE)
   source('server_rms_arcblockmap.R', local = TRUE)
   source('server_rms_equip.R', local = TRUE)
-  # source('server_rms_blockopsmap.R', local = TRUE)
-  # source('server_rms_mtrl.R', local = TRUE)
+  source('server_rms_blockopsmap.R', local = TRUE)
+  source('server_rms_mtrl.R', local = TRUE)
+  # source('server_rms_fin.R', local = TRUE)
   # source('server_app_master.R', local = TRUE)
-  
+  # source('server_app_drill.R', local = TRUE)
   
 }
 
