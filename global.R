@@ -10,6 +10,7 @@ library(DBI)
 library(tidyverse)
 # library(RCurl)
 library(config)
+library(echarts4r)
 
 
 # basic authentication ----------------------------------------------------
@@ -23,7 +24,7 @@ login_details <- data.frame(user = c("datak"),
 #look at config.yml file for db connection either local or in production 
 dw <- config::get('dataconnection') 
 #wyhen in shinyapps.io in production, select shinyapps, otherwise commentout
-Sys.setenv(R_CONFIG_ACTIVE = 'default') # default or shinyapps. see config.yml
+Sys.setenv(R_CONFIG_ACTIVE = 'shinyapps') # default or shinyapps. see config.yml
 
 #connect to aws server
 con <- DBI::dbConnect(odbc::odbc(),

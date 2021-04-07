@@ -155,3 +155,78 @@ output$download_button_masterTable <- downloadHandler(
   }
 )
 
+
+# echarts -----------------------------------------------------------------
+
+output$donut_xx <- renderEcharts4r({
+  interim_masterTable() %>% 
+    e_charts(ProcBlock) %>% 
+    e_pie(Contributions, radius = c("30%", "55%")) %>% 
+    e_tooltip(
+      trigger = 'item',
+      textStyle = list(
+        color = '#fff'
+      ),
+      formatter = e_tooltip_pie_formatter("percent")
+    ) %>% 
+    e_theme('red-velvet')
+})
+
+
+output$donut_block <- renderEcharts4r({
+  interim_masterTable() %>%
+    gather(costblock, cost, Labor, Mtrl, DPN, CS_OH, MU) %>%
+    group_by(costblock) %>%
+    summarise(sum=sum(cost)) %>%
+    mutate(ratio = sum/sum(sum)) %>%
+    e_charts(costblock) %>%
+    e_pie(sum, radius = c("30%", "55%")) %>%
+    e_tooltip(
+      trigger = 'item',
+      textStyle = list(
+        color = '#fff'
+      ),
+      formatter = e_tooltip_pie_formatter("percent")
+    ) %>%
+    e_theme('tech-blue')
+})
+
+output$pareto <- renderEcharts4r({
+  interim_masterTable() %>%
+    group_by(Rcs) %>%
+    summarise(sum=sum(TtlCost_MfgFomat),
+              DPN=sum(DPN),
+              Labor=sum(Labor),
+              Mtrl=sum(Mtrl),
+              MU=sum(MU),
+              CS_OH=sum(CS_OH)) %>%
+    slice_max(sum, n=20) %>%  #top 20
+    arrange(sum) %>%
+    e_charts(Rcs) %>%
+    e_bar(DPN, stack = "grp") %>%
+    e_bar(Labor, stack = "grp") %>%
+    e_bar(Mtrl, stack = "grp") %>%
+    e_bar(MU, stack = "grp") %>%
+    e_bar(CS_OH, stack = "grp") %>%
+    # e_labels(position = "right") %>%
+    e_flip_coords() %>%
+    e_x_axis(
+      formatter = e_axis_formatter('currency')
+    ) %>%
+    # e_y_axis(
+    #   axisLabel = list(interval = 0, rotate =45),
+    #   margin = 100
+    # ) %>%
+    e_tooltip(
+      axisPointer = list(
+        type='cross'
+      ),
+      trigger = 'axis',
+      backgroundColor = 'rgba(0,0,0,0.75)',
+      borderColor = 'rgba(0,0,0,0.75)',
+      textStyle = list(
+        color = '#fff'
+      )
+    ) %>%
+    e_theme('tech-blue')
+})

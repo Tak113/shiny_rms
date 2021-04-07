@@ -31,6 +31,34 @@ tabItem_app_master <-
           
           #Tabset
           tabsetPanel(type='tabs',
+            tabPanel('Drilldown',
+              
+              br(),
+              h4('Drill Down'),
+              h5('For exploretoly data analysis'),
+              br(),
+              
+              fluidRow(
+                column(5,
+                  column(12,
+                    h4('By process block'),
+                    echarts4rOutput('donut_xx', height=400),
+                  ),
+                  br(),
+                  column(12,
+                    h4('By cost block'),
+                    echarts4rOutput('donut_block', height=400)
+                  )
+                ),
+                column(7,
+                  h4('Pareto'),
+                  h5('Top 20 pareto, by combination of cost block/process block and equipment/operation'),
+                  echarts4rOutput('pareto', height=800)
+                )
+              )
+                    
+                     
+            ), #tabPanel2
             tabPanel('Structural Table',
               
               br(),
@@ -50,16 +78,7 @@ tabItem_app_master <-
                   downloadButton("download_button_masterTable", "Download", icon("download"))
                 )
               )  
-            ), #tabPanel1
-            tabPanel('Drilldown',
-              
-              br(),
-              h4('Drill Down'),
-              h5('Drill down for exploretoly data analysis')
-              
-                    
-                     
-            ) #tabPanel2
+            ) #tabPanel1
           ) #tabSetPanel
     ) #fluidPage
   )

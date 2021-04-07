@@ -1,6 +1,6 @@
 
 # load sub files for each pages -------------------------------------------
-# source('ui_readmefirst.R', local = TRUE)
+source('ui_readmefirst.R', local = TRUE)
 source('ui_rms_arc.R', local = TRUE)
 source('ui_rms_procblock.R', local = TRUE)
 source('ui_rms_arcblockmap.R', local = TRUE)
@@ -35,7 +35,7 @@ sidebar <- dashboardSidebar(width = "250px", collapsed = TRUE,
 body <- dashboardBody(
   tabItems(
     
-    # tabItem_readmefirst,
+    tabItem_readmefirst,
     tabItem_rms_arc,
     tabItem_rms_procblock,
     tabItem_rms_abm,
