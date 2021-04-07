@@ -180,7 +180,7 @@ output$donut_block <- renderEcharts4r({
     summarise(sum=sum(cost)) %>%
     mutate(ratio = sum/sum(sum)) %>%
     e_charts(costblock) %>%
-    e_pie(sum, radius = c("30%", "55%")) %>%
+    e_pie(ratio, radius = c("30%", "55%")) %>%
     e_tooltip(
       trigger = 'item',
       textStyle = list(
