@@ -159,9 +159,13 @@ output$download_button_masterTable <- downloadHandler(
 # echarts -----------------------------------------------------------------
 
 output$donut_xx <- renderEcharts4r({
-  interim_masterTable() %>% 
+  interim_masterTable() %>%
+    na.omit() %>% 
+    group_by(ProcBlock) %>% 
+    summarise(sum = sum(Contributions)) %>% 
+    mutate(ratio = sum/sum(sum)) %>% 
     e_charts(ProcBlock) %>% 
-    e_pie(Contributions, radius = c("30%", "55%")) %>% 
+    e_pie(ratio, radius = c("30%", "55%")) %>% 
     e_tooltip(
       trigger = 'item',
       textStyle = list(
@@ -175,6 +179,7 @@ output$donut_xx <- renderEcharts4r({
 
 output$donut_block <- renderEcharts4r({
   interim_masterTable() %>%
+    na.omit() %>% 
     gather(costblock, cost, Labor, Mtrl, DPN, CS_OH, MU) %>%
     group_by(costblock) %>%
     summarise(sum=sum(cost)) %>%
@@ -193,6 +198,7 @@ output$donut_block <- renderEcharts4r({
 
 output$pareto <- renderEcharts4r({
   interim_masterTable() %>%
+    na.omit() %>% 
     group_by(Rcs) %>%
     summarise(sum=sum(TtlCost_MfgFomat),
               DPN=sum(DPN),

@@ -5,8 +5,8 @@ useShinyalert()
 abm_df <- reactiveValues()
 
 #function to create data under abm_df and load "equip" database
-  arc_name_selection_abm <- dbReadTable(con, "arc") %>% select(-ArcName_Note) #for a selection
-  pb_name_selection_abm <- dbReadTable(con, "procblock") %>% select(-c(MfgFomat,ProcBlock_Note)) #for a selection
+  arc_name_selection_abm <- dbReadTable(con, "arc") %>% dplyr::select(-ArcName_Note) #for a selection
+  pb_name_selection_abm <- dbReadTable(con, "procblock") %>% dplyr::select(-c(MfgFomat,ProcBlock_Note)) #for a selection
   abm_df$data <- dbReadTable(con, "arcblockmap") %>%  # for a db update
     left_join(arc_name_selection_abm, by="uuid_arc") %>% #add ArcName from uuid_arc
     left_join(pb_name_selection_abm, by="uuid_pb")     #add ProcBlock from uuid_pb

@@ -9,7 +9,7 @@ library(odbc)
 library(DBI)
 library(tidyverse)
 # library(RCurl)
-library(config)
+library(config) #for config.yml
 library(echarts4r)
 
 
